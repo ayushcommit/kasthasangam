@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Free Kundli | Kathasangam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+</head>
+<body class="bg-katha-purple-dark text-white antialiased">
+
+    <!-- Navigation -->
+    <nav class="glass-nav py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <a href="index.html" class="flex items-center gap-2">
+            <i class="fa-solid fa-dharmachakra text-2xl text-katha-saffron"></i>
+            <span class="font-serif text-xl font-bold gradient-text">Kathasangam</span>
+        </a>
+        <div id="auth-nav-container"></div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-12 fade-in">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4">Free <span class="text-katha-saffron">Kundli Matching</span> & Analysis</h1>
+            <p class="text-gray-400">Get your detailed birth chart and AI-powered life predictions instantly.</p>
+        </div>
+
+        <!-- Kundli Form -->
+        <div id="kundli-form-container" class="glass-dark rounded-[2.5rem] p-8 md:p-12 border border-white/10 shadow-2xl">
+            <form id="kundli-form" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-400 uppercase tracking-widest">Full Name</label>
+                        <input type="text" name="name" required placeholder="Enter your name" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-katha-saffron transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-400 uppercase tracking-widest">Gender</label>
+                        <div class="flex gap-4">
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="gender" value="male" class="hidden peer" checked>
+                                <div class="text-center py-4 rounded-2xl border border-white/10 peer-checked:border-katha-saffron peer-checked:bg-katha-saffron/10 transition-all">Male</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="radio" name="gender" value="female" class="hidden peer">
+                                <div class="text-center py-4 rounded-2xl border border-white/10 peer-checked:border-katha-saffron peer-checked:bg-katha-saffron/10 transition-all">Female</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-400 uppercase tracking-widest">Birth Date</label>
+                        <input type="date" name="dob" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-katha-saffron transition-all [color-scheme:dark]">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-400 uppercase tracking-widest">Birth Time</label>
+                        <input type="time" name="tob" required class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-katha-saffron transition-all [color-scheme:dark]">
+                    </div>
+                    <div class="space-y-2 md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-400 uppercase tracking-widest">Birth Place</label>
+                        <input type="text" name="pob" required placeholder="City, State, Country" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-katha-saffron transition-all">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-5 rounded-2xl bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white font-bold text-xl shadow-xl hover:shadow-katha-saffron/30 transition-all transform hover:-translate-y-1">
+                    Generate My Kundli <i class="fa-solid fa-sparkles ml-2"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Kundli Result (Hidden Initially) -->
+        <div id="kundli-result" class="hidden space-y-10 py-12">
+            <div id="printable-area" class="glass-dark rounded-[2.5rem] p-8 md:p-12 border border-white/10 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-10">
+                    <div>
+                        <h2 class="text-3xl font-serif font-bold text-katha-saffron" id="res-name"></h2>
+                        <p class="text-gray-400" id="res-details"></p>
+                    </div>
+                    <button onclick="downloadKundliPDF()" class="bg-white/5 hover:bg-white/10 p-4 rounded-2xl border border-white/10 transition-all">
+                        <i class="fa-solid fa-file-pdf text-xl text-red-400"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Basic Chart Rendering (SVG) -->
+                    <div class="aspect-square bg-white/5 rounded-3xl border border-white/5 flex items-center justify-center relative p-8">
+                        <svg viewBox="0 0 400 400" class="w-full h-full text-katha-saffron/40 stroke-current fill-none stroke-[1]">
+                            <rect x="10" y="10" width="380" height="380" />
+                            <line x1="10" y1="10" x2="390" y2="390" />
+                            <line x1="10" y1="390" x2="390" y2="10" />
+                            <polygon points="10,200 200,10 390,200 200,390" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center p-12">
+                             <div class="grid grid-cols-3 grid-rows-3 w-full h-full text-white font-bold text-xs">
+                                 <!-- Dynamic House Content -->
+                                 <div class="flex items-center justify-center">12</div>
+                                 <div class="flex items-center justify-center text-katha-saffron text-xl">1</div>
+                                 <div class="flex items-center justify-center">2</div>
+                                 <div class="flex items-center justify-center">11</div>
+                                 <div class="flex items-center justify-center"></div>
+                                 <div class="flex items-center justify-center">3</div>
+                                 <div class="flex items-center justify-center">10</div>
+                                 <div class="flex items-center justify-center">7</div>
+                                 <div class="flex items-center justify-center">4</div>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-serif font-bold">Key Predictions</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                                <h4 class="font-bold text-katha-gold mb-1">Career & Finance</h4>
+                                <p class="text-sm text-gray-400">Strong planetary positions indicate a mid-year career shift towards leadership roles.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                                <h4 class="font-bold text-katha-gold mb-1">Love & Relationship</h4>
+                                <p class="text-sm text-gray-400">Harmony in relationships. Venus is transitioning into a favorable house.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                                <h4 class="font-bold text-katha-gold mb-1">Health & Wellness</h4>
+                                <p class="text-sm text-gray-400">Focus on mindfulness and dietary habits to maintain energy levels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Interpretation Section -->
+                <div class="mt-12 p-8 rounded-3xl bg-katha-saffron/5 border border-katha-saffron/20">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fa-solid fa-robot text-katha-saffron text-xl"></i>
+                        <h3 class="text-xl font-bold">AI Detailed Interpretation</h3>
+                    </div>
+                    <div id="ai-prediction" class="text-gray-300 leading-relaxed space-y-4">
+                        <div class="h-4 bg-white/5 rounded-full w-3/4 animate-pulse"></div>
+                        <div class="h-4 bg-white/5 rounded-full w-1/2 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-8">
+                <button onclick="location.reload()" class="text-gray-400 hover:text-white transition-all underline underline-offset-4">Generate Another Kundli</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/kundli.js"></script>
+</body>
+</html>

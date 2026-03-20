@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Kathasangam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+</head>
+<body class="bg-katha-purple-dark text-white antialiased">
+
+    <!-- Simple Dashboard Nav -->
+    <nav class="glass-nav py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <a href="index.html" class="flex items-center gap-2">
+            <i class="fa-solid fa-dharmachakra text-2xl text-katha-saffron"></i>
+            <span class="font-serif text-xl font-bold gradient-text">Kathasangam</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <div id="wallet-balance" class="glass-effect px-4 py-1.5 rounded-full text-sm font-bold text-katha-gold flex items-center gap-2">
+                <i class="fa-solid fa-wallet"></i> ₹0.00
+            </div>
+            <button onclick="logout()" class="text-gray-400 hover:text-white text-sm">Logout</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Sidebar -->
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="glass-dark p-6 rounded-3xl text-center">
+                    <div id="user-avatar" class="w-24 h-24 mx-auto bg-katha-saffron rounded-full flex items-center justify-center text-3xl font-bold mb-4 border-4 border-white/10">
+                        U
+                    </div>
+                    <h2 id="user-display-name" class="font-bold text-xl mb-1">User Name</h2>
+                    <p id="user-email" class="text-sm text-gray-400 mb-6">user@example.com</p>
+                    <button class="w-full py-2.5 rounded-xl border border-katha-saffron text-katha-saffron hover:bg-katha-saffron hover:text-white transition-all text-sm font-bold">Edit Profile</button>
+                </div>
+
+                <nav class="glass-dark rounded-3xl overflow-hidden">
+                    <a href="#" class="block px-6 py-4 bg-white/5 border-l-4 border-katha-saffron text-katha-saffron font-bold">
+                        <i class="fa-solid fa-grid-2 mr-3"></i> Overview
+                    </a>
+                    <a href="#" class="block px-6 py-4 hover:bg-white/5 text-gray-300 transition-all font-medium border-l-4 border-transparent">
+                        <i class="fa-solid fa-clock-rotate-left mr-3"></i> Chat History
+                    </a>
+                    <a href="#" class="block px-6 py-4 hover:bg-white/5 text-gray-300 transition-all font-medium border-l-4 border-transparent">
+                        <i class="fa-solid fa-file-invoice mr-3"></i> Saved Kundli
+                    </a>
+                    <a href="#" class="block px-6 py-4 hover:bg-white/5 text-gray-300 transition-all font-medium border-l-4 border-transparent">
+                        <i class="fa-solid fa-wallet mr-3"></i> Wallet Transactions
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="lg:col-span-3 space-y-8">
+                
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-effect p-6 rounded-3xl border-t border-white/10">
+                        <p class="text-gray-400 text-sm mb-1">Wallet Balance</p>
+                        <h3 class="text-3xl font-bold text-katha-saffron">₹0.00</h3>
+                        <button onclick="let amt=prompt('Enter amount to recharge:', '100'); if(amt) rechargeWallet(amt)" class="text-xs text-katha-gold hover:underline mt-2 block text-left">Recharge Now →</button>
+                    </div>
+                    <div class="glass-effect p-6 rounded-3xl border-t border-white/10">
+                        <p class="text-gray-400 text-sm mb-1">Total Consultations</p>
+                        <h3 class="text-3xl font-bold">0</h3>
+                        <p class="text-xs text-gray-500 mt-2">Sessions since joining</p>
+                    </div>
+                    <div class="glass-effect p-6 rounded-3xl border-t border-white/10">
+                        <p class="text-gray-400 text-sm mb-1">Saved Kundlis</p>
+                        <h3 class="text-3xl font-bold">0</h3>
+                        <p class="text-xs text-gray-500 mt-2">Ready for analysis</p>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="glass-dark rounded-3xl p-8 border border-white/10">
+                    <h3 class="text-xl font-bold mb-6 font-serif">Recent Activity</h3>
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-moon-stars text-2xl text-gray-600"></i>
+                        </div>
+                        <p class="text-gray-400">No recent activity found. Start your first consultation!</p>
+                        <a href="talk-to-astrologer.html" class="inline-block mt-4 bg-katha-saffron text-white px-6 py-2 rounded-xl font-bold hover:shadow-lg transition-all">Talk to Astrologer</a>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script>
+        // Dashboard specific logic
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.auth) {
+                window.auth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        // Redirect to home if not logged in
+                        window.location.href = 'index.html';
+                    } else {
+                        document.getElementById('user-display-name').textContent = user.displayName || 'User';
+                        document.getElementById('user-email').textContent = user.email;
+                        if (user.photoURL) {
+                            const avatar = document.getElementById('user-avatar');
+                            avatar.innerHTML = `<img src="${user.photoURL}" class="w-full h-full rounded-full object-cover">`;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

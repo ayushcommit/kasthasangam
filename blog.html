@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrology Blog | Kathasangam</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="antialiased selection:bg-katha-saffron selection:text-white pb-0">
+
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <!-- Omitted desktop nav for brevity -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <i class="fa-solid fa-dharmachakra text-3xl text-katha-saffron animate-float"></i>
+                        <span class="font-serif text-2xl font-bold gradient-text tracking-wide">Kathasangam</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-katha-saffron transition-colors font-medium">Home</a>
+                    <a href="blog.html" class="text-white hover:text-katha-saffron transition-colors font-medium">Blog</a>
+                    <a href="talk-to-astrologer.html" class="bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white px-6 py-2.5 rounded-full font-medium border border-white/20">Talk to Astrologer</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-12 relative overflow-hidden text-center border-b border-white/10">
+        <div class="relative z-10 max-w-4xl mx-auto px-4 fade-in">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4">Cosmic <span class="text-katha-saffron">Wisdom Blog</span></h1>
+            <p class="text-gray-400 text-lg">Read the latest insights on astrology, vastu, numerology, and spirituality.</p>
+        </div>
+    </header>
+
+    <main class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Featured Post -->
+        <div class="mb-16">
+            <div class="glass-dark rounded-2xl overflow-hidden border border-white/10 group cursor-pointer flex flex-col md:flex-row hover:border-katha-saffron/50 transition-colors">
+                <div class="md:w-1/2 h-64 md:h-96 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=800&auto=format&fit=crop" alt="Featured blog post" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute top-4 left-4 bg-katha-saffron text-white text-xs font-bold px-3 py-1 rounded-full">Must Read</div>
+                </div>
+                <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                    <div class="text-sm text-gray-500 mb-3 flex items-center gap-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> Oct 24, 2026</span>
+                        <span><i class="fa-regular fa-clock mr-1"></i> 5 min read</span>
+                    </div>
+                    <a href="blog-post.html"><h2 class="text-3xl font-serif text-white mb-4 group-hover:text-katha-saffron transition-colors">The Impact of Retrograde Mercury on Your Career This Month</h2></a>
+                    <p class="text-gray-400 mb-8 leading-relaxed line-clamp-3">Mercury retrograde often gets a bad reputation for causing communication breakdowns, but it can actually be a powerful time for reflection and rethinking career strategies...</p>
+                    <a href="blog-post.html" class="text-katha-saffron font-bold flex items-center gap-2 hover:gap-3 transition-all">Read Full Article <i class="fa-solid fa-arrow-right mt-1"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Grid -->
+        <h3 class="text-2xl font-serif mb-8 border-b border-white/10 pb-4">Latest Articles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Post -->
+            <div class="glass-effect rounded-2xl overflow-hidden group hover:-translate-y-2 transition-transform border border-white/10 hover:border-white/30">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1543167448-6a3f01c784fa?q=80&w=600&auto=format&fit=crop" alt="Blog" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3 text-xs text-gray-500">
+                        <span class="text-katha-gold">Vastu Shastra</span>
+                        <span>Oct 18, 2026</span>
+                    </div>
+                    <a href="blog-post.html"><h3 class="text-xl font-serif font-bold text-white mb-3 group-hover:text-katha-saffron transition-colors">5 Simple Vastu Tips for a Peaceful Home Environment</h3></a>
+                    <p class="text-gray-400 text-sm line-clamp-2">Harmonize the energy of your living space with these easy-to-implement traditional Vastu guidelines.</p>
+                </div>
+            </div>
+
+            <!-- Post -->
+            <div class="glass-effect rounded-2xl overflow-hidden group hover:-translate-y-2 transition-transform border border-white/10 hover:border-white/30">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1494959764136-6be9eb3c261e?q=80&w=600&auto=format&fit=crop" alt="Blog" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3 text-xs text-gray-500">
+                        <span class="text-katha-gold">Relationships</span>
+                        <span>Oct 12, 2026</span>
+                    </div>
+                    <a href="blog-post.html"><h3 class="text-xl font-serif font-bold text-white mb-3 group-hover:text-katha-saffron transition-colors">How Venus Placement Affects Your Love Life</h3></a>
+                    <p class="text-gray-400 text-sm line-clamp-2">Discover how the planet of love, Venus, shapes your romantic desires and compatibility in relationships.</p>
+                </div>
+            </div>
+
+            <!-- Post -->
+            <div class="glass-effect rounded-2xl overflow-hidden group hover:-translate-y-2 transition-transform border border-white/10 hover:border-white/30">
+                <div class="h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop" alt="Blog" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3 text-xs text-gray-500">
+                        <span class="text-katha-gold">Numerology</span>
+                        <span>Oct 05, 2026</span>
+                    </div>
+                    <a href="blog-post.html"><h3 class="text-xl font-serif font-bold text-white mb-3 group-hover:text-katha-saffron transition-colors">Calculating Your Life Path Number: Finding Purpose</h3></a>
+                    <p class="text-gray-400 text-sm line-clamp-2">Learn the simple mathematical formula to calculate your core Life Path Number and what it means.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-[#120223] border-t border-white/10 pt-8 pb-8 mt-12">
+         <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+             <p>© 2026 Kathasangam. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

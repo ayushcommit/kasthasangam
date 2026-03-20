@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kathasangam | Premium Astrology Services in India</title>
+    <meta name="description" content="Discover Your Destiny with Kathasangam. Authentic and premium astrology, daily horoscope, numerology, and vastu services in India Talk to expert astrologers.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tailwind CSS (CDN for zero-dependency execution) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/seo.js"></script>
+</head>
+<body class="antialiased selection:bg-katha-saffron selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <i class="fa-solid fa-dharmachakra text-3xl text-katha-saffron animate-float"></i>
+                        <span class="font-serif text-2xl font-bold gradient-text tracking-wide">Kathasangam</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-white hover:text-katha-saffron transition-colors font-medium">Home</a>
+                    <a href="about.html" class="text-gray-300 hover:text-katha-saffron transition-colors font-medium">About</a>
+                    
+                    <!-- Services Dropdown (Simple link for now) -->
+                    <div class="relative group cursor-pointer py-2">
+                        <span class="text-gray-300 group-hover:text-katha-saffron transition-colors font-medium flex items-center gap-1">
+                            Services <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </span>
+                        <div class="absolute left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <div class="glass-dark rounded-xl py-2 mt-2 shadow-xl border border-white/10">
+                                <a href="daily-horoscope.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-katha-saffron">Daily Horoscope</a>
+                                <a href="marriage.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-katha-saffron">Marriage Astrology</a>
+                                <a href="numerology.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-katha-saffron">Numerology</a>
+                                <a href="vastu.html" class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-katha-saffron">Vastu Consultation</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="talk-to-astrologer.html" class="bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg hover:shadow-katha-saffron/30 transition-all transform hover:-translate-y-0.5 border border-white/20">
+                        Talk to Astrologer
+                    </a>
+
+                    <!-- User Profile / Login Toggle -->
+                    <div id="auth-nav-container" class="ml-2">
+                        <button id="login-btn" class="text-gray-300 hover:text-white font-medium border border-white/20 px-4 py-2 rounded-full transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-user-circle"></i> Login
+                        </button>
+                        <div id="user-profile-toggle" class="hidden relative group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-katha-saffron flex items-center justify-center text-white font-bold border-2 border-white/20">
+                                U
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md">
+                        <i id="menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                        <i id="close-icon" class="fa-solid fa-xmark text-2xl hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden glass-dark border-t border-white/10">
+            <div class="px-4 py-5 space-y-4">
+                <a href="index.html" class="block text-white font-medium">Home</a>
+                <a href="about.html" class="block text-gray-300 hover:text-white font-medium">About</a>
+                <div class="border-t border-white/10 pt-4 pb-2">
+                    <p class="text-xs text-katha-saffron font-bold uppercase tracking-wider mb-2">Services</p>
+                    <a href="daily-horoscope.html" class="block py-2 text-gray-300 hover:text-white pl-4">Daily Horoscope</a>
+                    <a href="zodiac.html" class="block py-2 text-gray-300 hover:text-white pl-4">Zodiac Signs</a>
+                    <a href="numerology.html" class="block py-2 text-gray-300 hover:text-white pl-4">Numerology</a>
+                    <a href="vastu.html" class="block py-2 text-gray-300 hover:text-white pl-4">Vastu</a>
+                </div>
+                <a href="blog.html" class="block text-gray-300 hover:text-white font-medium">Blog</a>
+                <a href="talk-to-astrologer.html" class="block w-full text-center bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white px-6 py-3 rounded-full font-medium shadow-lg mt-4">
+                    Talk to Astrologer
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Background elements -->
+        <div class="absolute inset-0 bg-katha-purple-dark z-0">
+            <!-- Decorative gradient orb -->
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-katha-purple rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-float"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-katha-saffron rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-float" style="animation-delay: -3s;"></div>
+            
+            <!-- Stars background pattern (css grid or pseudo) -->
+            <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center fade-in">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-effect mb-6 border-katha-saffron/30 text-sm font-medium text-katha-gold-light">
+                <i class="fa-solid fa-sparkles"></i> 
+                <span>Premium Indian Astrology Platform</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Discover Your Destiny <br>
+                <span class="gradient-text">With Kathasangam</span>
+            </h1>
+            
+            <p class="mt-4 text-xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed mb-10">
+                Connect with India's most trusted and verified spiritual guides. Let ancient wisdom illuminate your path to success, love, and harmony.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <a href="talk-to-astrologer.html" class="bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_20px_rgba(255,153,51,0.4)] transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-white/20">
+                    <i class="fa-solid fa-phone"></i> Talk to Astrologer
+                </a>
+                <a href="#services" class="glass-effect text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                    Explore Astrology <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto opacity-70">
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-user-check text-2xl text-katha-saffron"></i>
+                    <span class="text-sm font-medium">Verified Experts</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-2xl text-katha-saffron"></i>
+                    <span class="text-sm font-medium">100% Private</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-clock text-2xl text-katha-saffron"></i>
+                    <span class="text-sm font-medium">24/7 Available</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-star text-2xl text-katha-saffron"></i>
+                    <span class="text-sm font-medium">4.9/5 Ratings</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom decorative wave or fade -->
+        <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-katha-purple-dark to-transparent z-10"></div>
+    </header>
+
+    <!-- Services Quick Links -->
+    <section id="services" class="py-20 relative z-10 -mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">Explore the <span class="text-katha-saffron">Cosmic Wisdom</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Discover insights about your life through our comprehensive astrological services.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <!-- Service Card -->
+                <a href="daily-horoscope.html" class="glass-effect p-6 rounded-2xl text-center group hover:bg-white/10 transition-all transform hover:-translate-y-2 cursor-pointer border-t border-white/10">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-katha-purple-light to-katha-purple rounded-full flex items-center justify-center mb-4 group-hover:shadow-[0_0_15px_rgba(255,153,51,0.3)] transition-all">
+                        <i class="fa-solid fa-sun text-2xl text-katha-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Daily Horoscope</h3>
+                    <p class="text-xs text-gray-400">Plan your day ahead</p>
+                </a>
+                
+                <a href="kundli.html" class="glass-effect p-6 rounded-2xl text-center group hover:bg-white/10 transition-all transform hover:-translate-y-2 cursor-pointer border-t border-white/10">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-katha-purple-light to-katha-purple rounded-full flex items-center justify-center mb-4 group-hover:shadow-[0_0_15px_rgba(255,153,51,0.3)] transition-all">
+                        <i class="fa-solid fa-rings-wedding text-2xl text-katha-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Free Kundli</h3>
+                    <p class="text-xs text-gray-400">Generate your birth chart</p>
+                </a>
+
+                <a href="numerology.html" class="glass-effect p-6 rounded-2xl text-center group hover:bg-white/10 transition-all transform hover:-translate-y-2 cursor-pointer border-t border-white/10">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-katha-purple-light to-katha-purple rounded-full flex items-center justify-center mb-4 group-hover:shadow-[0_0_15px_rgba(255,153,51,0.3)] transition-all">
+                        <i class="fa-solid fa-arrow-down-1-9 text-2xl text-katha-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Numerology</h3>
+                    <p class="text-xs text-gray-400">Power of numbers</p>
+                </a>
+
+                <a href="vastu.html" class="glass-effect p-6 rounded-2xl text-center group hover:bg-white/10 transition-all transform hover:-translate-y-2 cursor-pointer border-t border-white/10">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-br from-katha-purple-light to-katha-purple rounded-full flex items-center justify-center mb-4 group-hover:shadow-[0_0_15px_rgba(255,153,51,0.3)] transition-all">
+                        <i class="fa-solid fa-house-chimney text-2xl text-katha-gold"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1">Vastu Shastra</h3>
+                    <p class="text-xs text-gray-400">Harmony at home</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Astrologers -->
+    <section class="py-20 relative">
+        <!-- Background decorative orb -->
+        <div class="absolute top-0 right-0 w-80 h-80 bg-katha-purple mix-blend-screen filter blur-[100px] opacity-40"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">Premium <span class="text-katha-saffron">Astrologers</span></h2>
+                    <p class="text-gray-400 max-w-xl">Consult with our highly experienced and verified astrologers for accurate predictions and remedies.</p>
+                </div>
+                <a href="talk-to-astrologer.html" class="hidden md:flex text-katha-saffron hover:text-white font-medium items-center gap-2 transition-colors">
+                    View All <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Astrologer Card 1 -->
+                <div class="glass-dark rounded-2xl overflow-hidden shadow-xl border border-white/10 group">
+                    <div class="p-6 relative">
+                        <div class="absolute top-4 right-4 bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full border border-green-500/30 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+                        </div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-katha-saffron to-katha-purple p-1">
+                                <img src="https://ui-avatars.com/api/?name=Acharya+Sharma&background=2e0a4f&color=fff&size=200" alt="Acharya Sharma" class="w-full h-full rounded-full object-cover border-2 border-katha-purple-dark">
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl font-serif">Acharya Sharma</h3>
+                                <p class="text-katha-saffron text-sm font-medium">Vedic Astrology, Vastu</p>
+                                <div class="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                                    <span class="flex items-center"><i class="fa-solid fa-star text-katha-gold mr-1"></i> 4.9</span>
+                                    <span>•</span>
+                                    <span>Exp: 15 Years</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-6 line-clamp-2">Renowned Vedic astrologer with expertise in career and marriage predictions. Guiding souls towards success.</p>
+                        
+                        <div class="flex gap-2 text-xs text-gray-400 mb-6 flex-wrap">
+                            <span class="px-2 py-1 glass-effect rounded-md">Hindi</span>
+                            <span class="px-2 py-1 glass-effect rounded-md">English</span>
+                        </div>
+
+                        <button onclick="window.open(getWhatsAppLink('Hello Acharya Sharma, I want an astrology consultation via Kathasangam.'), '_blank')" class="w-full py-3 rounded-xl bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Chat on WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Astrologer Card 2 -->
+                <div class="glass-dark rounded-2xl overflow-hidden shadow-xl border border-white/10 group">
+                    <div class="p-6 relative">
+                        <div class="absolute top-4 right-4 bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full border border-green-500/30 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+                        </div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-katha-saffron to-katha-purple p-1">
+                                <img src="https://ui-avatars.com/api/?name=Tarot+Priya&background=2e0a4f&color=fff&size=200" alt="Tarot Priya" class="w-full h-full rounded-full object-cover border-2 border-katha-purple-dark">
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl font-serif">Tarot Priya</h3>
+                                <p class="text-katha-saffron text-sm font-medium">Tarot Reading, Love</p>
+                                <div class="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                                    <span class="flex items-center"><i class="fa-solid fa-star text-katha-gold mr-1"></i> 4.8</span>
+                                    <span>•</span>
+                                    <span>Exp: 8 Years</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-6 line-clamp-2">Specialist in matters of love, relationships, and modern day challenges through intuitive Tarot reading.</p>
+                        
+                        <div class="flex gap-2 text-xs text-gray-400 mb-6 flex-wrap">
+                            <span class="px-2 py-1 glass-effect rounded-md">English</span>
+                            <span class="px-2 py-1 glass-effect rounded-md">Marathi</span>
+                        </div>
+
+                        <button onclick="window.open(getWhatsAppLink('Hello Tarot Priya, I want a tarot consultation via Kathasangam.'), '_blank')" class="w-full py-3 rounded-xl bg-[#25D366] hover:bg-[#1ebd5a] text-white font-bold transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Chat on WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Astrologer Card 3 -->
+                <div class="glass-dark rounded-2xl overflow-hidden shadow-xl border border-white/10 group hidden md:block">
+                    <div class="p-6 relative">
+                        <div class="absolute top-4 right-4 bg-gray-500/20 text-gray-400 text-xs px-2 py-1 rounded-full border border-gray-500/30 flex items-center gap-1">
+                            Busy
+                        </div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-katha-saffron to-katha-purple p-1 group-hover:shadow-[0_0_15px_rgba(255,153,51,0.5)] transition-all">
+                                <img src="https://ui-avatars.com/api/?name=Dr.+Verma&background=2e0a4f&color=fff&size=200" alt="Dr. Verma" class="w-full h-full rounded-full object-cover border-2 border-katha-purple-dark">
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-xl font-serif">Dr. Verma</h3>
+                                <p class="text-katha-saffron text-sm font-medium">Numerology, Career</p>
+                                <div class="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                                    <span class="flex items-center"><i class="fa-solid fa-star text-katha-gold mr-1"></i> 5.0</span>
+                                    <span>•</span>
+                                    <span>Exp: 22 Years</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-6 line-clamp-2">Ph.D in Astrological Sciences. Helps professionals navigate career choices with numerical alignment.</p>
+                        
+                        <div class="flex gap-2 text-xs text-gray-400 mb-6 flex-wrap">
+                            <span class="px-2 py-1 glass-effect rounded-md">Hindi</span>
+                        </div>
+
+                        <button onclick="window.open(getWhatsAppLink('Hello Dr. Verma, I want an astrology consultation via Kathasangam.'), '_blank')" class="w-full py-3 rounded-xl bg-gray-600 hover:bg-gray-500 text-white font-bold transition-colors flex items-center justify-center gap-2">
+                            Notify When Free
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="talk-to-astrologer.html" class="inline-flex text-katha-saffron border border-katha-saffron px-6 py-2 rounded-full hover:bg-katha-saffron hover:text-white font-medium items-center gap-2 transition-colors">
+                    View All Astrologers <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 relative bg-[#22073e] border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <i class="fa-solid fa-quote-left text-4xl text-katha-saffron/30 mb-4 block"></i>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">Stories of <span class="text-katha-saffron">Transformation</span></h2>
+                <p class="text-gray-400">Hear from our users who found clarity and peace.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-effect p-8 rounded-2xl relative">
+                    <div class="flex text-katha-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 italic mb-6 leading-relaxed">"I was facing severe career stagnation. Acharya Sharma's remedies and insight into my Kundli were incredibly accurate. My professional life has completely turned around."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">R</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Rohan Mehta</h4>
+                            <p class="text-xs text-gray-500">Mumbai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-effect p-8 rounded-2xl relative">
+                    <div class="flex text-katha-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 italic mb-6 leading-relaxed">"The platform is so premium but easy to use. The WhatsApp chat consultation with Tarot Priya felt personal and highly spiritual. Highly recommended for relationship advice."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">S</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Sneha Patel</h4>
+                            <p class="text-xs text-gray-500">Pune</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-effect p-8 rounded-2xl relative md:hidden lg:block">
+                    <div class="flex text-katha-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 italic mb-6 leading-relaxed">"I consulted Kathasangam for Vastu before buying my new home. The deep cultural roots and logical explanations provided were exactly what I was looking for."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Amit Singh</h4>
+                            <p class="text-xs text-gray-500">Delhi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Preview Section -->
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4 font-serif">Commonly Asked <span class="text-katha-saffron">Questions</span></h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item -->
+                <div class="glass-dark border border-white/10 rounded-xl overflow-hidden">
+                    <button class="faq-button w-full text-left px-6 py-4 font-medium flex justify-between items-center focus:outline-none hover:bg-white/5 transition-colors">
+                        <span>How accurate are the astrological predictions?</span>
+                        <i class="faq-icon fa-solid fa-chevron-down text-katha-saffron transition-transform duration-300"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
+                        <div class="p-6 text-sm text-gray-300 leading-relaxed border-t border-white/5">
+                            Our astrologers are highly verified experts with decades of experience in Vedic astrology, Tarot, and Numerology. While astrology is a guiding science, our experts strive for the highest precision based on your birth details (Kundli).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item -->
+                <div class="glass-dark border border-white/10 rounded-xl overflow-hidden">
+                    <button class="faq-button w-full text-left px-6 py-4 font-medium flex justify-between items-center focus:outline-none hover:bg-white/5 transition-colors">
+                        <span>How does the WhatsApp consultation work?</span>
+                        <i class="faq-icon fa-solid fa-chevron-down text-katha-saffron transition-transform duration-300"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
+                        <div class="p-6 text-sm text-gray-300 leading-relaxed border-t border-white/5">
+                            It's simple and seamless. Choose an astrologer, click the "Chat on WhatsApp" button, and you will be redirected to our official WhatsApp support channel to begin your private consultation instantly.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <a href="faq.html" class="text-katha-saffron hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">View All FAQs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#120223] border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-1">
+                    <a href="index.html" class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-dharmachakra text-2xl text-katha-saffron"></i>
+                        <span class="font-serif text-xl font-bold gradient-text">Kathasangam</span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Bridging ancient cosmic wisdom with modern life. Premium, private, and trusted astrology platform for Indians globally.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded-full glass-effect flex items-center justify-center text-gray-300 hover:text-katha-saffron hover:bg-white/10 transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass-effect flex items-center justify-center text-gray-300 hover:text-katha-saffron hover:bg-white/10 transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full glass-effect flex items-center justify-center text-gray-300 hover:text-katha-saffron hover:bg-white/10 transition-all"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-serif font-bold text-white mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">About Us</a></li>
+                        <li><a href="talk-to-astrologer.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Talk to Astrologer</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Astrology Blog</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Contact Support</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="font-serif font-bold text-white mb-6 uppercase tracking-wider text-sm">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="daily-horoscope.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Daily Horoscope</a></li>
+                        <li><a href="marriage.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Kundli Matching</a></li>
+                        <li><a href="vastu.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Vastu Consultation</a></li>
+                        <li><a href="numerology.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Numerology</a></li>
+                        <li><a href="zodiac.html" class="text-gray-400 hover:text-katha-saffron text-sm transition-colors">Zodiac Signs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-serif font-bold text-white mb-6 uppercase tracking-wider text-sm">Contact Us</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 text-sm text-gray-400">
+                            <i class="fa-solid fa-location-dot mt-1 text-katha-saffron"></i>
+                            <span>123 Spiritual Center, Cosmic Road, Mumbai, India 400001</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-400">
+                            <i class="fa-solid fa-envelope text-katha-saffron"></i>
+                            <a href="mailto:support@kathasangam.com" class="hover:text-white transition-colors">support@kathasangam.com</a>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-gray-400">
+                            <i class="fa-solid fa-phone text-katha-saffron"></i>
+                            <a href="tel:+919876543210" class="hover:text-white transition-colors">+91 98765 43210</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-gray-500">© 2026 Kathasangam. All rights reserved.</p>
+                <div class="flex gap-4 text-xs text-gray-500">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+        <div class="glass-dark w-full max-w-md rounded-3xl overflow-hidden border border-white/10 shadow-2xl transform transition-all animate-float">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold font-serif gradient-text">Welcome Back</h2>
+                    <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                
+                <p class="text-gray-400 mb-8 text-sm">Log in to consult with top astrologers and access your saved Kundli.</p>
+                
+                <div class="space-y-4">
+                    <button onclick="loginWithGoogle()" class="w-full py-3.5 rounded-xl glass-effect hover:bg-white/10 text-white font-medium flex items-center justify-center gap-3 transition-all border border-white/10">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-5 h-5">
+                        Continue with Google
+                    </button>
+                    
+                    <div class="relative py-4 flex items-center">
+                        <div class="flex-grow border-t border-white/5"></div>
+                        <span class="flex-shrink mx-4 text-xs text-gray-500 uppercase tracking-widest">or</span>
+                        <div class="flex-grow border-t border-white/5"></div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1.5 uppercase tracking-wider">Email Address</label>
+                            <input type="email" placeholder="name@example.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-katha-saffron/50 transition-all">
+                        </div>
+                        <button class="w-full py-4 rounded-xl bg-gradient-to-r from-katha-saffron to-katha-saffron-dark text-white font-bold hover:shadow-[0_0_20px_rgba(255,153,51,0.3)] transition-all">
+                            Request OTP / Login
+                        </button>
+                    </div>
+                </div>
+
+                <p class="mt-8 text-center text-xs text-gray-500">
+                    By continuing, you agree to our <a href="#" class="text-katha-saffron hover:underline">Terms</a> and <a href="#" class="text-katha-saffron hover:underline">Privacy Policy</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialize main JS -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

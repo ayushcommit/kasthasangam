@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Kathasangam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+</head>
+<body class="bg-[#0f041a] text-white antialiased flex flex-col md:flex-row min-h-screen">
+
+    <!-- Admin Sidebar -->
+    <aside class="w-full md:w-64 bg-[#1a0430] border-r border-white/10 p-6 flex flex-col">
+        <div class="flex items-center gap-2 mb-10">
+            <i class="fa-solid fa-dharmachakra text-2xl text-katha-saffron"></i>
+            <span class="font-serif text-xl font-bold gradient-text">Katha Admin</span>
+        </div>
+        
+        <nav class="space-y-2 flex-grow">
+            <a href="#" class="block px-4 py-3 rounded-xl bg-katha-saffron/10 text-katha-saffron font-bold">
+                <i class="fa-solid fa-chart-line mr-3"></i> Statistics
+            </a>
+            <a href="#" onclick="showSection('users')" class="block px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-users mr-3"></i> Users
+            </a>
+            <a href="#" onclick="showSection('astrologers')" class="block px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-user-tie mr-3"></i> Astrologers
+            </a>
+            <a href="#" onclick="showSection('transactions')" class="block px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-receipt mr-3"></i> Transactions
+            </a>
+            <a href="#" onclick="showSection('blogs')" class="block px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 transition-all">
+                <i class="fa-solid fa-newspaper mr-3"></i> Manage Blogs
+            </a>
+        </nav>
+
+        <button onclick="logout()" class="mt-auto px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-all text-left">
+            <i class="fa-solid fa-right-from-bracket mr-3"></i> Logout
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-10 overflow-y-auto">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+            <div>
+                <h1 id="section-title" class="text-3xl font-serif font-bold">Platform Overview</h1>
+                <p class="text-gray-400 text-sm">Real-time data from Kathasangam ecosystem</p>
+            </div>
+            <div class="flex gap-4">
+                <button class="bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-sm hover:bg-white/10">Export Data</button>
+                <button class="bg-katha-saffron text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-katha-saffron/20">+ Add New</button>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div id="stats-section" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <div class="glass-dark p-6 rounded-3xl border border-white/10">
+                <p class="text-gray-500 text-xs uppercase mb-1">Total Revenue</p>
+                <h3 class="text-2xl font-bold">₹0.00</h3>
+                <span class="text-green-400 text-[10px]">+12.5% vs last month</span>
+            </div>
+            <div class="glass-dark p-6 rounded-3xl border border-white/10">
+                <p class="text-gray-500 text-xs uppercase mb-1">Active Users</p>
+                <h3 class="text-2xl font-bold">0</h3>
+                <span class="text-green-400 text-[10px]">+5.2% vs last week</span>
+            </div>
+            <div class="glass-dark p-6 rounded-3xl border border-white/10">
+                <p class="text-gray-500 text-xs uppercase mb-1">Astrologers</p>
+                <h3 class="text-2xl font-bold">0</h3>
+                <span class="text-yellow-400 text-[10px]">3 pending approval</span>
+            </div>
+            <div class="glass-dark p-6 rounded-3xl border border-white/10">
+                <p class="text-gray-500 text-xs uppercase mb-1">Sessions Today</p>
+                <h3 class="text-2xl font-bold">0</h3>
+                <span class="text-green-400 text-[10px]">High demand now</span>
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="glass-dark rounded-3xl overflow-hidden border border-white/10">
+            <div id="table-container" class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-white/5 border-b border-white/10">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Name</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Joined Date</th>
+                            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body" class="divide-y divide-white/5">
+                        <!-- Dynamic content here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Admin Logic
+        const showSection = async (type) => {
+            const title = document.getElementById('section-title');
+            const tableBody = document.getElementById('admin-table-body');
+            
+            title.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-20 text-gray-500">Fetching data...</td></tr>';
+
+            if (!window.db) return;
+
+            try {
+                const snapshot = await window.db.collection(type).get();
+                tableBody.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-10 text-gray-500">No ${type} found.</td></tr>`;
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-white/5 transition-all';
+                    row.innerHTML = `
+                        <td class="px-6 py-4">
+                            <div class="font-bold">${data.name || data.email || doc.id}</div>
+                            <div class="text-[10px] text-gray-500">${data.email || ''}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 bg-green-500/20 text-green-400 text-[10px] rounded-full border border-green-500/30">Active</span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-400">
+                            ${data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'N/A'}
+                        </td>
+                        <td class="px-6 py-4">
+                            <button class="text-katha-saffron hover:underline text-xs mr-4">Edit</button>
+                            <button class="text-red-500 hover:underline text-xs">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (err) {
+                console.error(err);
+                tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-red-400">Error loading data. Check console.</td></tr>';
+            }
+        };
+
+        // Secure Admin Panel
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.auth) {
+                window.auth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        window.location.href = 'index.html';
+                    } else {
+                        // In production, check for admin claim
+                        // For now, allow logged in users (or check email)
+                        showSection('users'); 
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

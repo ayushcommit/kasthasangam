@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talk to Astrologer | Kathasangam</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/tailwind-config.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+</head>
+<body class="antialiased selection:bg-katha-saffron selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <i class="fa-solid fa-dharmachakra text-3xl text-katha-saffron animate-float"></i>
+                        <span class="font-serif text-2xl font-bold gradient-text tracking-wide">Kathasangam</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-katha-saffron transition-colors font-medium">Home</a>
+                    <a href="about.html" class="text-gray-300 hover:text-katha-saffron transition-colors font-medium">About</a>
+                    <a href="talk-to-astrologer.html" class="text-white hover:text-katha-saffron transition-colors font-medium">Talk to Astrologer</a>
+                </div>
+                <!-- mobile menu button omitted for brevity but should be there -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md">
+                        <i id="menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                        <i id="close-icon" class="fa-solid fa-xmark text-2xl hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden glass-dark border-t border-white/10">
+            <div class="px-4 py-5 space-y-4">
+                <a href="index.html" class="block text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="talk-to-astrologer.html" class="block text-white font-medium">Talk to Astrologer</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-12 relative overflow-hidden text-center border-b border-white/10">
+        <div class="relative z-10 max-w-4xl mx-auto px-4 fade-in">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4">Talk to <span class="text-katha-saffron">Premium Astrologers</span></h1>
+            <p class="text-gray-400 text-lg">Instant, private WhatsApp consultations with verified experts.</p>
+        </div>
+    </header>
+
+    <main class="py-12 relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="glass-effect rounded-2xl p-4 md:p-6 mb-10 border border-white/10">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+                <div class="relative w-full lg:max-w-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input id="search-astrologer" type="text" placeholder="Search by name or specialty..." class="w-full bg-[#2e0a4f] border border-white/20 text-white rounded-xl py-3.5 pl-12 pr-4 focus:ring-katha-saffron focus:border-katha-saffron outline-none transition-all">
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto lg:ml-auto">
+                    <select id="filter-expertise" class="bg-[#2e0a4f] border border-white/20 text-white text-sm rounded-xl py-3.5 px-4 outline-none appearance-none cursor-pointer">
+                        <option value="all">All Expertise</option>
+                        <option value="Vedic Astrology">Vedic Astrology</option>
+                        <option value="Tarot Reading">Tarot Reading</option>
+                        <option value="Numerology">Numerology</option>
+                        <option value="Vastu">Vastu</option>
+                    </select>
+
+                    <select id="filter-language" class="bg-[#2e0a4f] border border-white/20 text-white text-sm rounded-xl py-3.5 px-4 outline-none appearance-none cursor-pointer">
+                        <option value="all">All Languages</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="English">English</option>
+                        <option value="Marathi">Marathi</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Astrologers Grid -->
+        <div id="astrologer-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Astrologer cards will be rendered here via marketplace.js -->
+            <div class="col-span-full text-center py-20">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-katha-saffron"></div>
+                <p class="mt-4 text-gray-500">Loading astrologers...</p>
+            </div>
+        </div>
+        
+        <!-- Empty State (Hidden) -->
+        <div id="no-results" class="hidden text-center py-20">
+            <i class="fa-solid fa-ghost text-4xl text-gray-500 mb-4"></i>
+            <h3 class="text-xl font-bold text-gray-300">No astrologers found</h3>
+            <p class="text-gray-500 mt-2">Try adjusting your filters.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#120223] border-t border-white/10 pt-8 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+             <p>© 2026 Kathasangam. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Auth Modal (Standardized) -->
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+        <div class="glass-dark w-full max-w-md rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold font-serif gradient-text">Welcome Back</h2>
+                    <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <button onclick="loginWithGoogle()" class="w-full py-3.5 rounded-xl glass-effect hover:bg-white/10 text-white font-medium flex items-center justify-center gap-3 transition-all border border-white/10">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-5 h-5">
+                        Continue with Google
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/marketplace.js"></script>
+    <script>
+        // Page specific logic (like filters update)
+        document.addEventListener('DOMContentLoaded', () => {
+            const expFilter = document.getElementById('filter-expertise');
+            const searchInput = document.getElementById('search-astrologer');
+            
+            const handleUpdate = () => {
+                if (window.fetchAstrologers) {
+                    window.fetchAstrologers(expFilter.value, searchInput.value);
+                }
+            };
+
+            if (expFilter) expFilter.addEventListener('change', handleUpdate);
+            if (searchInput) searchInput.addEventListener('input', handleUpdate);
+        });
+    </script>
+</body>
+</html>
